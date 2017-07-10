@@ -1,1 +1,1 @@
-[!images](./Bézier_2_big.gif)
+<embed src="./EaseVisualizer.swf"></embed>
