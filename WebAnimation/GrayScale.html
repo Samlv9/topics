@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Grayscale</title>
+<style type="text/css">
+    body { margin: 20px; background: rgb(38, 50, 56); line-height: 1.5; font-size: 14px; color: #fff;
+           font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; }
+           
+    .container {
+        float: left;
+        margin: 20px;
+        border: 1px solid #666;   
+        width: 620px;
+        height: 387px;
+        position: relative;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    
+    #upload {
+        position: absolute;
+        width: 120px;
+        height: 40px;
+        line-height: 40px;
+        background: #069;
+        text-align: center;
+        border-radius: 4px;
+        left: 50%;
+        top: 50%;
+        cursor: pointer;
+        transform: translate(-50%, -50%);
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 8px;
+    }
+    
+    #upload:hover {
+        color: #eee;
+        background: #058;
+    }
+    
+</style>
+</head>
+<body>
+    
+<div class="container"><div id="upload">选择文件</div></div>
+<div class="container"><canvas id="stage" width="620" height="387"></canvas></div>
+    
+    
+    
+<script type="text/javascript">
+    var container = document.querySelectorAll(".container");
+    var btn = document.getElementById("upload");
+    var stage = document.getElementById("stage");
+    var context = stage.getContext("2d");
+    var idata = null;
+    var gdata = null;
+    var input = document.createElement("input"); 
+        input.type = "file";
+    var image = new Image();
+    
+    btn.addEventListener("click", function( evt ) {
+        var e = document.createEvent("MouseEvents");
+            e.initEvent("click", false, false);
+        
+        input.dispatchEvent(e);
+    });
+    
+    input.addEventListener("change", function( evt ) {
+        var file = evt.target.files[0];
+        
+        if ( !file ) return;
+        
+        var dataUrl = URL.createObjectURL(file);
+        
+        container.item(0).style.backgroundImage = "url(" + dataUrl + ")";
+        image.onload = function ( evt ) { drawImage(); }
+        image.src = dataUrl;
+    });
+    
+    function drawImage() {
+        var s = Math.min(Math.max(stage.width / image.naturalWidth, stage.height / image.naturalHeight), 1);
+        var w = image.naturalWidth * s;
+        var h = image.naturalHeight * s;
+        var x = (stage.width  - w) * 0.5;
+        var y = (stage.height - h) * 0.5;
+        
+        context.clearRect(0, 0, stage.width, stage.height);
+        context.drawImage(image, x, y, w, h);
+        
+        idata = context.getImageData(0, 0, stage.width, stage.height);
+        gdata = grayscale(context.getImageData(0, 0, stage.width, stage.height));
+        
+        stage.addEventListener("mouseover", mouseHandler);
+        stage.addEventListener("mouseout", mouseHandler);
+    }
+    
+    function grayscale( data ) {
+        for ( var i = 0; i < data.data.length; i += 4 ) {
+            var max = Math.max(data.data[i + 0], data.data[i + 1], data.data[i + 2]);
+            var min = Math.min(data.data[i + 0], data.data[i + 1], data.data[i + 2]);
+            var val = ((max + min) / 2) & 0xFF;
+            
+            data.data[i + 0] = val;
+            data.data[i + 1] = val;
+            data.data[i + 2] = val;
+        }
+        
+        return data;
+    }
+    
+    function emboss( data ) {
+        var w  = data.width;
+        var h  = data.height;
+        var d  = data.data;
+        var c  = 128;
+        var lr = 0;
+        var lg = 0;
+        var lb = 0;
+        
+        for ( var i = 0; i < data.width ; ++i  )
+        for ( var j = 0; j < data.height; ++j ) {
+            var k = 4 * (i * data.height + j);
+            
+            var r = d[k    ] - lr + c;
+            var g = d[k + 1] - lg + c;
+            var b = d[k + 2] - lb + c;
+            
+            lr = d[k    ];
+            lg = d[k + 1];
+            lb = d[k + 2];
+            
+            d[k    ] = r;
+            d[k + 1] = g;
+            d[k + 2] = b;
+        }
+        
+        return data;
+    }
+    
+    function mouseHandler( evt ) {
+        if ( evt.type == "mouseover" ) {
+            context.putImageData(gdata, 0, 0);
+        }
+        else {
+            context.putImageData(idata, 0, 0);
+        }
+    }
+
+</script>
+</body>
+</html>

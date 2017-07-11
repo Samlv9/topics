@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Animate=[GSAP]</title>
+<style type="text/css">
+    body { margin: 40px; background: rgb(38, 50, 56); overflow: hidden; line-height: 1.5; font-size: 14px; color: #fff;
+           font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; }
+           
+    .box {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 20px;
+        background: #aaa;
+        border: 1px solid #666;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 16px;
+        line-height: 50px;
+        
+        
+        color: #ffffff;
+    }
+    
+</style>
+</head>
+<body>
+    
+    
+<div class="box box-1">1</div>
+<div class="box box-2">2</div>
+<div class="box box-3">3</div>
+<div class="box box-4">4</div>
+<div class="box box-5">5</div>
+
+<button id="btn">Animate</button>
+
+
+<script type="text/javascript" src="./lib/TweenMax.js"></script>
+<script type="text/javascript">
+    var boxs = document.querySelectorAll(".box");
+    var btn  = document.getElementById("btn");
+    var bool = false;
+    
+    
+    /// 2.
+    var timeline = null;
+    
+    function effect_2() {
+        bool = !bool;
+        
+        if ( !timeline ) {
+            timeline = new TimelineMax({ pause: true });
+            
+            timeline.add( new TweenMax(boxs.item(0), 1, { backgroundColor: Math.random() * 0xFFFFFF, x: 500, rotation: 180 }) );
+                timeline.insert( new TweenMax(boxs.item(0), 1, { y: 288 }), 1);
+            
+            timeline.add( new TweenMax(boxs.item(1), 1, { backgroundColor: Math.random() * 0xFFFFFF, x: 500, rotation: 180 }) );
+                timeline.insert( new TweenMax(boxs.item(1), 1, { y: 144 }), 3);
+            
+            timeline.add( new TweenMax(boxs.item(2), 1, { backgroundColor: Math.random() * 0xFFFFFF, x: 500, rotation: 180 }) );
+            
+                timeline.insert( new TweenMax(boxs.item(3), 1, { y: -144 }), 5);
+            timeline.add( new TweenMax(boxs.item(3), 1, { backgroundColor: Math.random() * 0xFFFFFF, x: 500, rotation: 180 }) );
+            
+                timeline.insert( new TweenMax(boxs.item(4), 1, { y: -288 }), 7);
+            timeline.add( new TweenMax(boxs.item(4), 1, { backgroundColor: Math.random() * 0xFFFFFF, x: 500, rotation: 180 }) );
+        }
+        
+        if ( bool ) 
+            timeline.play();
+            
+        else 
+            timeline.reverse();
+    }
+    
+    
+    btn.addEventListener("click", function( evt ) {
+        effect_2();
+    });
+
+</script>
+</body>
+</html>
