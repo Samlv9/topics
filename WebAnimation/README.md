@@ -6,7 +6,24 @@
 **逐帧动画** 
 <center>[<img src="https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/frameByframe.gif"/>](https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/frameByframe.gif)</center><center><small><u>_逐帧动画_</u></small></center>
 
-**精灵图(SpriteSheet)**
+**精灵图(Sprite)**
+<center>[<img width="600px" src="https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/monster.png"/>](https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/monster.gif)</center><center><small><u>_精灵图(Sprite sheet)_</u></small></center>
+
+```
+.element {
+    width: 190px;
+	height: 240px;
+	background: url(./monster.png) no-repeat 0 0;
+	background-position: 0px 0px;
+	animation: sprite-movie 2s steps(10, end) infinite;
+}
+
+@keyframes sprite-movie {
+    100% { background-position: -1900px 0px; }
+}
+```
+
+演示地址：[Monster](https://samlv9.github.io/topics/WebAnimation/FrameByFrame2.html) | [Monster-Not-Overflow](https://samlv9.github.io/topics/WebAnimation/FrameByFrame.html)
 
 **矢量动画**
 <center>[<img width="500" src="https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/scalar.png"/>](https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/scalar.png)</center><center><small><u>_矢量动画_</u></small></center>
@@ -25,7 +42,7 @@
 #### 缓动(Tween)
 - 缓动对象(`Target`)
 - 计时器(`Timer`)
-- 插值函数(`Ease Function/Timing Function`)
+- 插值函数(`Timing Function`)
 - 关键帧属性值(`Keyframe Values`)
 
 **同步频率(RAF)**
@@ -38,13 +55,13 @@ Q: 为什么应该使用 `requestAnimationFrame`，而不是 `setInterval` 或�
 **高精度时间戳(Timestamp)**
 ```
 /// 最早的方法：
-+(new Date) || (new Date).getTime(); // 秒级别
++(new Date) || (new Date).getTime(); // 毫秒级别
 
 /// IE9+
-Date.now(); // 秒级别
+Date.now(); // 毫秒级别
 
 /// Performance API
-performance.now() || performance.webkitNow(); // 微秒级别（千分之一秒）。
+performance.now() || performance.webkitNow(); // 微秒级别（千分之一毫秒）。
 ```
 Q: 为什么需要使用 `performance.now()`代替 `Date.now()`。
 
@@ -60,7 +77,7 @@ Q: 为什么需要使用 `performance.now()`代替 `Date.now()`。
 /// c: change
 /// d: duration
 function Linear( t, b, c, d ) {
-	return b + t * (c / d);
+	return b + c * (t / d);
 }
 ```
 
@@ -139,13 +156,17 @@ function combineRGB( red, green, blue ) {
 
 **HSL 与 HSV**
 <center>[<img width="640" src="https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/hsl_hsv.png"/>](https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/hsl_hsv.png)</center>
+
+<center>[<img width="320" src="https://upload.wikimedia.org/wikipedia/commons/b/b3/HSL_color_solid_dblcone_chroma_gray.png"/>](https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/HSL_color_solid_dblcone_chroma_gray.png)[<img width="320" src="https://upload.wikimedia.org/wikipedia/commons/0/00/HSV_color_solid_cone_chroma_gray.png"/>](https://upload.wikimedia.org/wikipedia/commons/0/00/HSV_color_solid_cone_chroma_gray.png)</center>
 <center><small><u>_HSV / HSL 颜色模型_</u></small></center>
 
 相关文档：
 - [HSL and HSV](https://en.wikipedia.org/wiki/HSL_and_HSV)
 - [RGB](https://en.wikipedia.org/wiki/RGB_color_model)
 
-演示地址：[Grayscale](https://samlv9.github.io/topics/WebAnimation/GrayScale.html)
+演示地址：
+- [Grayscale](https://samlv9.github.io/topics/WebAnimation/GrayScale.html)
+- [Color Animation](https://samlv9.github.io/topics/WebAnimation/ColorAnimation.html)
 
 **滤镜(filter)**
 - 模糊滤镜(Blur Filter)
@@ -154,6 +175,8 @@ function combineRGB( red, green, blue ) {
 - **高阶:**置换滤镜(Replacement Filter)
 
 **混合模式(blend-mode)**
+<center>[<img width="550" src="https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/blendmode.png"/>](https://raw.githubusercontent.com/Samlv9/topics/master/WebAnimation/blendmode.png)</center><center><small><u>混合模式</u></small></center>
+
 - 正常(Normal)
 - 变暗(Darken)
 - 变亮(Lighten)
@@ -181,6 +204,9 @@ function combineRGB( red, green, blue ) {
 	/* #WARN: Safari 无效 */
 	.element { will-change: transform, opacity; }
 	```
+
+#### 动画调试
+- [Test Animate.css](https://daneden.github.io/animate.css/)
 
 --------------------------------------------------------------------------------
 ####<center style="font-size:60px;margin:60px 0">THANKS</center>

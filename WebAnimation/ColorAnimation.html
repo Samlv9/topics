@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Color Animation</title>
+<style type="text/css">
+    body { margin: 20px; background: rgb(38, 50, 56); line-height: 1.5; font-size: 14px; color: #fff;
+           font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; }
+
+    #circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 9999px;
+        background: hsl(0, 100%, 50%);
+        margin: 40px auto;
+        animation: colors 2s linear infinite;
+        animation-direction:reverse;
+    }
+</style>
+</head>
+<body>
+    <div id="circle"></div>
+</body>
+<script>
+    var hue = 0;
+    var idx = 0;
+    var circle = document.querySelector("#circle");
+    
+    function update() {
+        requestAnimationFrame(update);
+        if ( ++idx >= 2 ) {
+            idx = 0;
+            ++hue;
+        }
+        
+        circle.style.background = `hsl(${hue}, 100%, 50%)`;
+    }
+    
+    requestAnimationFrame(update);
+</script>
+
+</html>
